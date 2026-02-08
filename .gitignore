@@ -18,3 +18,13 @@ Thumbs.db
 # editor
 .vscode/
 .idea/
+
+# Local Netlify folder
+.netlify
+
+# Playwright MCP
+.playwright-mcp/
+
+# Test artifacts
+/test-site.mjs
+/*.jpeg
