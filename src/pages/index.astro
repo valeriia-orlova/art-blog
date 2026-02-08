@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GalleryGrid from '../components/GalleryGrid.astro';
+import BlogCard from '../components/BlogCard.astro';
+import { getCollection } from 'astro:content';
+
+const allArtwork = (await getCollection('artwork')).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+const recentArtwork = allArtwork.slice(0, 4);
+
+const allPosts = (await getCollection('blog')).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+const recentPosts = allPosts.slice(0, 3);
+---
+
+<BaseLayout title="Studio — Art & Inspiration">
+  <section class="hero container">
+    <h1>Studio</h1>
+    <p class="tagline">Mixed-media artwork and the stories behind the process.</p>
+  </section>
+
+  <section class="section container">
+    <h2 class="section-title">Recent Work</h2>
+    <GalleryGrid artworks={recentArtwork} />
+    <a href="/gallery" class="view-all">View all artwork &rarr;</a>
+  </section>
+
+  <section class="section container">
+    <h2 class="section-title">From the Blog</h2>
+    <div class="blog-grid">
+      {recentPosts.map((post) => (
+        <BlogCard
+          title={post.data.title}
+          date={post.data.date}
+          featuredImage={post.data.featuredImage}
+          excerpt={post.data.excerpt}
+          slug={post.id}
+        />
+      ))}
+    </div>
+    <a href="/blog" class="view-all">Read more posts &rarr;</a>
+  </section>
+</BaseLayout>

@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GalleryGrid from '../components/GalleryGrid.astro';
+import { getCollection } from 'astro:content';
+
+const allArtwork = (await getCollection('artwork')).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+---
+
+<BaseLayout title="Gallery — Studio">
+  <section class="section container">
+    <h1 class="section-title">Gallery</h1>
+    <GalleryGrid artworks={allArtwork} showFilter={true} />
+  </section>
+</BaseLayout>

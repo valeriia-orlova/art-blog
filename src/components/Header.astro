@@ -1,0 +1,30 @@
+---
+const pathname = Astro.url.pathname;
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="site-name">Studio</a>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="/" class:list={[{ active: pathname === '/' }]}>Home</a></li>
+      <li><a href="/gallery" class:list={[{ active: pathname === '/gallery' }]}>Gallery</a></li>
+      <li><a href="/blog" class:list={[{ active: pathname.startsWith('/blog') }]}>Blog</a></li>
+      <li><a href="/about" class:list={[{ active: pathname === '/about' }]}>About</a></li>
+      <li><a href="/contact" class:list={[{ active: pathname === '/contact' }]}>Contact</a></li>
+    </ul>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector('.nav-toggle');
+  const nav = document.querySelector('.nav-links');
+  toggle?.addEventListener('click', () => {
+    const open = nav?.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+</script>

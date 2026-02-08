@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = (await getCollection('blog')).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+---
+
+<BaseLayout title="Blog — Studio">
+  <section class="section container">
+    <h1 class="section-title">Blog</h1>
+    <div class="blog-grid">
+      {allPosts.map((post) => (
+        <BlogCard
+          title={post.data.title}
+          date={post.data.date}
+          featuredImage={post.data.featuredImage}
+          excerpt={post.data.excerpt}
+          slug={post.id}
+        />
+      ))}
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,70 @@
+---
+import ArtCard from './ArtCard.astro';
+
+interface ArtworkEntry {
+  id: string;
+  data: {
+    title: string;
+    image: string;
+    category: string;
+    date: Date;
+    description?: string;
+  };
+}
+
+interface Props {
+  artworks: ArtworkEntry[];
+  showFilter?: boolean;
+}
+
+const { artworks, showFilter = false } = Astro.props;
+const categories = ['All', 'Digital', 'Traditional', 'Photography', 'Mixed Media'];
+---
+
+{showFilter && (
+  <div class="filter-bar">
+    {categories.map((cat) => (
+      <button
+        class:list={['filter-btn', { active: cat === 'All' }]}
+        data-filter={cat}
+      >
+        {cat}
+      </button>
+    ))}
+  </div>
+)}
+
+<div class="gallery-grid">
+  {artworks.map((art) => (
+    <ArtCard
+      title={art.data.title}
+      image={art.data.image}
+      category={art.data.category}
+      slug={art.id}
+    />
+  ))}
+</div>
+
+{showFilter && (
+  <script>
+    const buttons = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.art-card');
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const filter = btn.getAttribute('data-filter');
+
+        buttons.forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        cards.forEach((card) => {
+          if (filter === 'All' || card.getAttribute('data-category') === filter) {
+            card.removeAttribute('hidden');
+          } else {
+            card.setAttribute('hidden', '');
+          }
+        });
+      });
+    });
+  </script>
+)}
